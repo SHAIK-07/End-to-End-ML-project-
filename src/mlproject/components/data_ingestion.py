@@ -3,8 +3,9 @@ import sys
 from src.mlproject.logger import logger
 from src.mlproject.exception import CustomException
 import pandas as pd
+import pymysql
 from dataclasses import dataclass
-from src.mlproject.utils import read_sql_data
+from src.mlproject.utils import read_mysql_data
 from sklearn.model_selection import train_test_split
 
 @dataclass
@@ -19,7 +20,7 @@ class DataIngestion:
 
     def initiate_data_ingestion(self):  # ✅ Fixed function name
         try:
-            df = read_sql_data()
+            df = read_mysql_data()
             logger.info("Reading from MySQL completed")
 
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path), exist_ok=True)

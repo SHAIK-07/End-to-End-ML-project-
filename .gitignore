@@ -30,7 +30,7 @@ datasets/
 
 # Ignore Trained Models and Artifacts
 models/
-artifacts/
+#artifacts/
 *.h5
 *.pkl
 *.joblib
