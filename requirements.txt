@@ -4,13 +4,10 @@ python-dotenv
 mysql-connector-python
 pymysql
 scikit-learn
-requests
-
-
-
-
-
-
+seaborn
+catboost
+xgboost
+mlflow
 
 
 #-e . 
