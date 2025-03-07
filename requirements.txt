@@ -1,6 +1,17 @@
 numpy
 pandas
+python-dotenv
+mysql-connector-python
+pymysql
+scikit-learn
 
 
 
-#-e .
+
+
+
+
+
+#-e . 
+# the above one only run after filestructure is run 
+# once its run it will create the package so after that comment it like #-e .
