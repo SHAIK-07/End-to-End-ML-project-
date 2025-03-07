@@ -8,6 +8,8 @@ seaborn
 catboost
 xgboost
 mlflow
+nbformat
+
 
 
 #-e . 
