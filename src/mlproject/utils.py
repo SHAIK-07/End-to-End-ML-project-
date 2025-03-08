@@ -106,7 +106,6 @@ def evaluate_models(X_train, y_train,X_test,y_test,models,param):
 
 
 
-
 # 🔹 **2️⃣ Read from SQL Database using  (Default)**
 def read_pymysql_data():
     """

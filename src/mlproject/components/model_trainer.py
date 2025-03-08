@@ -38,19 +38,6 @@ class ModelTrainer:
         return rmse, mae, r2
 
     def initiate_model_trainer(self,train_array,test_array):
-        """
-        Initiates model training and evaluation on given data.
-
-        Args:
-            train_array (numpy.ndarray): The array which contains the training data
-            test_array (numpy.ndarray): The array which contains the testing data
-
-        Returns:
-            r2_score (float): The R2 score of the best model on the test data
-
-        Raises:
-            CustomException: If no best model found
-        """
         try:
             logging.info("Split training and test input data")
             X_train,y_train,X_test,y_test=(
@@ -106,9 +93,13 @@ class ModelTrainer:
                 
             }
             model_report:dict=evaluate_models(X_train,y_train,X_test,y_test,models,params)
+            
+            
 
             ## To get best model score from dict
             best_model_score = max(sorted(model_report.values()))
+            
+        
 
              ## To get best model name from dict
 
@@ -116,9 +107,10 @@ class ModelTrainer:
                 list(model_report.values()).index(best_model_score)
             ]
             best_model = models[best_model_name]
+            
 
             print("This is the best model:")
-            print(best_model_name)
+            print(best_model_name,best_model_score)
 
             model_names = list(params.keys())
 
@@ -129,8 +121,6 @@ class ModelTrainer:
                     actual_model = actual_model + model
 
             best_params = params[actual_model]
-            
-            #URL from DOGS hub
 
             mlflow.set_registry_uri("https://dagshub.com/SHAIK-07/practice.mlflow")
             tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
