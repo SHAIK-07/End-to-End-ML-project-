@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 from src.mlproject.logger import logger
 from src.mlproject.exception import CustomException
 
+import pickle
+import numpy as np
+
 # Load environment variables
 load_dotenv()
 host = os.getenv("host")
@@ -40,6 +43,36 @@ def read_mysql_data():
     except Exception as e:
         logger.error(f"Error in read_sql_data: {str(e)}")
         raise CustomException(e, sys)
+
+def save_object(file_path, obj):
+    try:
+        logger.info(f"Saving object at path: {file_path}")
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "wb") as file_obj:
+            pickle.dump(obj, file_obj)
+        logger.info(f"Object saved at path: {file_path}")
+    except Exception as e:
+        raise CustomException(e, sys)   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 🔹 **2️⃣ Read from SQL Database using  (Default)**
@@ -172,3 +205,4 @@ df = read_json_data("data.json")
 df = read_api_data("https://api.example.com/data")
 
 """
+
