@@ -60,4 +60,4 @@ docker-compose.override.yml
 *.dockerfile
 
 mlproject.egg-info
-
+catboost_info/
