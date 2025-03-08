@@ -29,15 +29,16 @@ datasets/
 *.parquet
 
 # Ignore Trained Models and Artifacts
+
 models/
-#artifacts/
+artifacts/
 *.h5
-*.pkl
 *.joblib
 *.ckpt
 *.onnx
 *.pt
 *.tflite
+
 
 # Ignore Config Files and Credentials
 config.yaml
@@ -59,3 +60,4 @@ docker-compose.override.yml
 *.dockerfile
 
 mlproject.egg-info
+
