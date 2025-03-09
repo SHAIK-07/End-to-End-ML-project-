@@ -30,15 +30,13 @@ list_of_files = [
     "templates/index.html",
     "tests/test_data_ingestion.py",  # Unit test files
     "tests/test_model_trainer.py",
-    "main.py",
     "app.py",
     "Dockerfile",
     "requirements.txt",
     "setup.py",
     "README.md",
     ".gitignore",  # Git ignore file
-    "logs/.gitkeep",  # Keeps logs folder in Git
-    
+    "logs/",  # Keeps logs folder in Git
     ".env"
 ]
 
