@@ -1,27 +1,74 @@
-from src.mlproject.logger import logger  
-from src.mlproject.exception import CustomException
-from src.mlproject.components.data_ingestion import DataIngestion
-from src.mlproject.components.data_transformation import DataTransformation
-from src.mlproject.components.model_trainer import ModelTrainer
-
+import os
 import sys
+import pandas as pd
+from flask import Flask, request, jsonify, render_template
+from src.mlproject.pipelines.training_pipeline import ModelTrainer
+from src.mlproject.pipelines.prediction_pipeline import PredictionPipeline
+from src.mlproject.utils import load_object
+from src.mlproject.logger import logger
+from src.mlproject.exception import CustomException
 
-if __name__ == "__main__":
-    logger.info("Execution has started")
+app = Flask(__name__)
 
+# ✅ Load the trained model using the utility function
+MODEL_PATH = "artifacts/best_model.pkl"
+model = None
+
+try:
+    if os.path.exists(MODEL_PATH):
+        model = load_object(MODEL_PATH)
+        logger.info("Model loaded successfully.")
+    else:
+        logger.warning("Model not found. Training is required.")
+except Exception as e:
+    logger.error(f"Error loading model: {str(e)}")
+    raise CustomException(e, sys)  # ✅ Correctly raising CustomException
+
+@app.route('/')
+def home():
+    """Render the homepage with a form for predictions."""
+    return render_template('index.html')
+
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    """Make predictions based on user input."""
     try:
-        data_ingestion = DataIngestion()
-        
-        train_data_path, test_data_path=data_ingestion.initiate_data_ingestion()  # ✅ Updated function name
-        
-        data_transformation = DataTransformation()
-        train_arr, test_arr, preprocessor_path = data_transformation.initiate_data_transformation(train_data_path, test_data_path)
-        
-        model_trainer = ModelTrainer()
-        print(model_trainer.initiate_model_trainer(train_arr, test_arr))
+        if not model:
+            raise CustomException("Model not found. Please train the model first.", sys)  # ✅ Raising CustomException
+
+        # ✅ Ensure request contains JSON data
+        if not request.is_json:
+            raise CustomException("Invalid request format. Expected JSON.", sys)
+
+        input_data = request.get_json()  # ✅ Get JSON input safely
+
+        # ✅ Validate that JSON is not empty
+        if not input_data:
+            raise CustomException("Received empty input data.", sys)
+
+        # ✅ Convert JSON to DataFrame
+        df = pd.DataFrame([input_data])
+        print(df)  # ✅ Debugging step: Check what the input looks like
+
+        model_path = "artifacts/best_model.pkl"
+        preprocessor_path = "artifacts/preprocessor.pkl"
+
+        # ✅ Load the prediction pipeline
+        predictor = PredictionPipeline(model_path, preprocessor_path)
+        prediction = predictor.predict(df)
+
+        return jsonify({"prediction": prediction.tolist()}), 200
+
+    except CustomException as e:
+        logger.error(f"Prediction Error: {str(e)}")
+        return jsonify({"error": str(e)}), 400  # Return error response
 
     except Exception as e:
-        logger.error("Custom Exception raised")
-        raise CustomException(e, sys)
+        logger.error(f"Unexpected Error: {str(e)}")
+        return jsonify({"error": "An unexpected error occurred."}), 500  # Internal Server Error
 
-    logger.info("Execution has ended")
+        
+
+if __name__ == "__main__":
+    app.run(debug=True)

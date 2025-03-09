@@ -24,6 +24,10 @@ list_of_files = [
     f"src/{project_name}/utils.py",
     "config/config.yaml",  # Configuration file
     "notebooks/eda.ipynb",  # Jupyter Notebook
+    "notebooks/Model_Training.ipynb",
+    "notebooks/Data/",
+    "static/styles.css",
+    "templates/index.html",
     "tests/test_data_ingestion.py",  # Unit test files
     "tests/test_model_trainer.py",
     "main.py",
@@ -34,7 +38,7 @@ list_of_files = [
     "README.md",
     ".gitignore",  # Git ignore file
     "logs/.gitkeep",  # Keeps logs folder in Git
-    "artifacts/.gitkeep",  # Keeps artifacts folder in Git
+    
     ".env"
 ]
 

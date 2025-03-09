@@ -10,7 +10,7 @@ xgboost
 mlflow
 nbformat
 dagshub
-
+pytest
 
 #-e . 
 # the above one only run after filestructure is run 
