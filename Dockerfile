@@ -20,11 +20,18 @@
 
 #############
 #AWS ECR Docker File
-FROM python:3.8-slim-buster
+# Use a lightweight base image
+FROM python:3.9-slim as base
+
+# Create a temporary build stage for installing dependencies
+FROM base as builder
 WORKDIR /app
-COPY . /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN apt update -y && apt install awscli -y
-
-RUN apt-get update && apt-get install ffmpeg libsm6 libxext6 unzip -y && pip install -r requirements.txt
-CMD ["python3", "app.py"]
+# Final image
+FROM base
+WORKDIR /app
+COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+COPY . .
+CMD ["python", "app.py"]
