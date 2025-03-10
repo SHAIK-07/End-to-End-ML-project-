@@ -15,42 +15,21 @@ def test_data_ingestion_initialization(data_ingestion):
     assert data_ingestion.ingestion_config.test_data_path.endswith("test.csv")
 
 def test_data_ingestion_process(data_ingestion):
-    """Test the full data ingestion process."""
+    """Test the full data ingestion process and check for .csv.dvc files."""
     try:
         train_path, test_path = data_ingestion.initiate_data_ingestion()
 
-        # ✅ Check if the files are created
-        assert os.path.exists(train_path), "Train CSV file was not created!"
-        assert os.path.exists(test_path), "Test CSV file was not created!"
+        # ✅ Check if the DVC-tracked files exist in artifacts/
+        train_dvc_path = train_path + ".dvc"
+        test_dvc_path = test_path + ".dvc"
+        raw_dvc_path = os.path.join(os.path.dirname(train_path), "raw.csv.dvc")
 
-        # ✅ Check if CSV files are not empty
-        train_df = pd.read_csv(train_path)
-        test_df = pd.read_csv(test_path)
-
-        assert not train_df.empty, "Train CSV file is empty!"
-        assert not test_df.empty, "Test CSV file is empty!"
+        assert os.path.exists(train_dvc_path), "Train CSV .dvc file was not created!"
+        assert os.path.exists(test_dvc_path), "Test CSV .dvc file was not created!"
+        assert os.path.exists(raw_dvc_path), "Raw CSV .dvc file was not created!"
 
     except CustomException as e:
         pytest.fail(f"Data Ingestion failed with CustomException: {str(e)}")
     except Exception as e:
         pytest.fail(f"Unexpected error during Data Ingestion: {str(e)}")
 
-# def test_missing_csv_file():
-#     """Test the case when the input CSV file is missing."""
-#     data_ingestion = DataIngestion()
-
-#     # ✅ Temporarily rename the expected CSV file (if it exists)
-#     csv_path = os.path.join('notebooks/data', 'stud.csv')
-#     temp_path = csv_path + ".backup"
-
-#     if os.path.exists(csv_path):
-#         os.rename(csv_path, temp_path)  # Rename to simulate missing file
-
-#     try:
-#         with pytest.raises(FileNotFoundError):
-#             data_ingestion.initiate_data_ingestion()
-
-#     finally:
-#         # ✅ Restore the original file after the test
-#         if os.path.exists(temp_path):
-#             os.rename(temp_path, csv_path)

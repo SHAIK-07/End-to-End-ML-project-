@@ -20,18 +20,25 @@ logs/*.log
 .ipynb_checkpoints/
 
 # Ignore Datasets and Large Files
-data/
+
 datasets/
+data
 *.csv
 *.tsv
 *.json
 *.xlsx
 *.parquet
 
+
+
+# Allow only stud.csv inside notebooks/data/
+
+
+
+
 # Ignore Trained Models and Artifacts
 
 models/
-artifacts/
 *.h5
 *.joblib
 *.ckpt
