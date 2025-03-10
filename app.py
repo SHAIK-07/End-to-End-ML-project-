@@ -11,6 +11,7 @@ from src.mlproject.exception import CustomException
 
 app = Flask(__name__)
 
+
 # ✅ Load the trained model using the utility function
 MODEL_PATH = "artifacts/best_model.pkl"
 model = None
