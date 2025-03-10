@@ -25,7 +25,8 @@ class DataIngestion:
             # Ensure artifact directory exists
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path), exist_ok=True)
 
-            csv_path = os.path.join('notebooks/data', 'stud.csv')
+            csv_path = os.path.abspath(os.path.join('notebooks/data', 'stud.csv'))
+            logger.info(f"CSV file path: {csv_path}")
 
             if not os.path.exists(csv_path):
                 logger.error(f"CSV file not found at {csv_path}")
