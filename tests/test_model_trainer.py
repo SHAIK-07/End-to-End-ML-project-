@@ -1,6 +1,5 @@
 import os
 import pytest
-import numpy as np
 from src.mlproject.components.model_trainer import ModelTrainer
 from src.mlproject.utils import load_object
 from src.mlproject.exception import CustomException

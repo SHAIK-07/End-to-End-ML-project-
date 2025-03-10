@@ -1,5 +1,6 @@
 numpy
 pandas
+numpy
 python-dotenv
 mysql-connector-python
 pymysql
